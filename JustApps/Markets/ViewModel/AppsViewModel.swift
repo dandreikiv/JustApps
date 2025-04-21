@@ -25,8 +25,8 @@ final class AppsViewModel {
         } catch {
             viewState = .failed(
                 FailureViewModel(
-                    title: "Something went wrong",
-                    subtitle: "Please try again later."
+                    title: String(localized: "Something went wrong"),
+                    subtitle: String(localized: "Please try again later.")
                 )
             )
         }
