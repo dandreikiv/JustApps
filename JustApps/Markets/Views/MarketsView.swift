@@ -9,7 +9,7 @@ struct MarketsView: View {
 
     var body: some View {
         List(markets, id: \.market) { market in
-            NavigationLink(destination: GamesView(market: market)) {
+            NavigationLink(destination: GamesView(games: market.games)) {
                 Text(market.market)
             }
         }

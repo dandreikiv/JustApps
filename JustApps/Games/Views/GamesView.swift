@@ -1,14 +1,32 @@
 import SwiftUI
 
 struct GamesView: View {
-    private let market: Market
+    private let viewModels: [GameViewModel]
 
-    init(market: Market) {
-        self.market = market
+    init(games: [Game]) {
+        self.viewModels = games.map(GameViewModel.init)
     }
 
     var body: some View {
-        List(market.games, rowContent: GameView.init)
+        List(viewModels, id: \.name) { viewModel in
+            HStack {
+                AsyncImage(url: viewModel.iconURL) { image in
+                    image.resizable()
+                } placeholder: {
+                    Color.gray
+                }
+                .frame(width: 50, height: 50)
+                .cornerRadius(8)
+
+                VStack(alignment: .leading) {
+                    Text(viewModel.name)
+                        .font(.title2)
+                    Text(viewModel.description)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
     }
 }
 
@@ -25,12 +43,5 @@ struct GamesView: View {
         iosGameUrl: "LaunchMixBlox"
     )
 
-    GamesView(
-        market: Market(
-            market: "us",
-            statusMessage: [:],
-            playGamesTitle: [:],
-            games: [game]
-        )
-    )
+    GamesView(games: [game])
 }

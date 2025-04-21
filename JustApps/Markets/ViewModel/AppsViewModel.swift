@@ -21,7 +21,7 @@ final class AppsViewModel {
 
         do {
             let marketsData: MarketsData = try await dataLoader.fetchData()
-            viewState = .loaded(marketsData.markets)
+            viewState = .loaded(marketsData.filteredMarkets)
         } catch {
             viewState = .failed(
                 FailureViewModel(
