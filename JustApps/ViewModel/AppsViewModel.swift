@@ -17,6 +17,8 @@ final class AppsViewModel {
     }
 
     func loadData() async {
+        viewState = .loading
+
         do {
             let marketsData: MarketsData = try await dataLoader.fetchData()
             viewState = .loaded(marketsData.marketViewModels)
@@ -33,8 +35,11 @@ final class AppsViewModel {
 
 private extension MarketsData {
     var marketViewModels: [MarketViewModel] {
-        markets.map { market in
-            MarketViewModel(name: market.market)
+        markets.compactMap { market in
+            if market.market.contains("-test") || market.market.contains("-staging") {
+                return nil
+            }
+            return MarketViewModel(name: market.market)
         }
     }
 }
