@@ -1,35 +1,36 @@
 import Foundation
 
 @Observable
-final class MarketsViewModel {
+final class AppsViewModel {
     // MARK: - Private
-    private let dataLoader: any DataLoader
+    private let dataLoader: any DataProvider
 
     // MARK: - Observable
     var viewState: ViewState = .idle
 
-    init(dataLoader: any DataLoader)  {
+    init(dataLoader: any DataProvider)  {
         self.dataLoader = dataLoader
     }
 
     convenience init() {
-        self.init(dataLoader: MarketsDataLoader())
+        self.init(dataLoader: MarketsDataProvider())
     }
 
     func loadData() async {
         do {
-            let marketsData = try await dataLoader.fetchData()
+            let marketsData: MarketsData = try await dataLoader.fetchData()
+            viewState = .loaded(marketsData.markets)
         } catch {
             
         }
     }
 }
 
-extension MarketsViewModel {
+extension AppsViewModel {
     enum ViewState {
         case idle
         case loading
         case loaded([Market])
-        case error(Error)
+        case failed(String)
     }
 }
