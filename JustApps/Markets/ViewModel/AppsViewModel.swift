@@ -21,7 +21,7 @@ final class AppsViewModel {
 
         do {
             let marketsData: MarketsData = try await dataLoader.fetchData()
-            viewState = .loaded(marketsData.marketViewModels)
+            viewState = .loaded(marketsData.markets)
         } catch {
             viewState = .failed(
                 FailureViewModel(
@@ -34,12 +34,12 @@ final class AppsViewModel {
 }
 
 private extension MarketsData {
-    var marketViewModels: [MarketViewModel] {
+    var filteredMarkets: [Market] {
         markets.compactMap { market in
             if market.market.contains("-test") || market.market.contains("-staging") {
                 return nil
             }
-            return MarketViewModel(name: market.market)
+            return market
         }
     }
 }
@@ -48,7 +48,7 @@ extension AppsViewModel {
     enum ViewState {
         case idle
         case loading
-        case loaded([MarketViewModel])
+        case loaded([Market])
         case failed(FailureViewModel)
     }
 }
