@@ -11,7 +11,9 @@ struct GamesView: View {
         List(viewModels, id: \.name) { viewModel in
             HStack {
                 AsyncImage(url: viewModel.iconURL) { image in
-                    image.resizable()
+                    image
+                        .resizable()
+                        .scaledToFill()
                 } placeholder: {
                     Color.gray
                 }
