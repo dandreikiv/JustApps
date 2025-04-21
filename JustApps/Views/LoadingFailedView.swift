@@ -1,18 +1,36 @@
-//
-//  LoadingFailedView.swift
-//  JustApps
-//
-//  Created by Dmytro Andreikiv on 21/04/2025.
-//
-
 import SwiftUI
 
 struct LoadingFailedView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    private let viewModel: FailureViewModel
+
+    init(viewModel: FailureViewModel) {
+        self.viewModel = viewModel
     }
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .resizable()
+                .frame(width: 50, height: 50)
+                .foregroundColor(.red)
+
+            Text(viewModel.title)
+                .font(.headline)
+
+            Text(viewModel.subtitle)
+                .font(.subheadline)
+                .foregroundColor(.gray)
+        }
+        .padding()
+    }
+
 }
 
 #Preview {
-    LoadingFailedView()
+    LoadingFailedView(
+        viewModel: FailureViewModel(
+            title: "Title",
+            subtitle: "Subtitle"
+        )
+    )
 }

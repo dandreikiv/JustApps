@@ -8,6 +8,7 @@ enum DataLoaderError: Error {
 
 actor MarketsDataProvider: DataProvider {
     func fetchData<T: Codable>() async throws -> T {
+        throw DataLoaderError.unknown
         guard let url = URL(string: "https://jp-fallback.s3.us-east-2.amazonaws.com/fallback.json") else {
             throw DataLoaderError.invalidURL
         }

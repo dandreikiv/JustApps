@@ -7,14 +7,17 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             switch viewModel.viewState {
+                case .idle:
+                    Button("Fetch markets data") {
+                        Task { await viewModel.loadData() }
+                    }.buttonStyle(.borderedProminent)
                 case .loading:
                     LoadingView()
-                case .loaded(let markets):
-                    MarketsView()
-                case .idle:
-                    Text("prepare")
-                case .failed(let message):
-                    Text(message)
+                case .loaded(let viewModel):
+                    MarketsView(viewModel: viewModel)
+                        .navigationTitle("Games")
+                case .failed(let viewModel):
+                    LoadingFailedView(viewModel: viewModel)
             }
         }
     }

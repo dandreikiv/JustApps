@@ -19,9 +19,22 @@ final class AppsViewModel {
     func loadData() async {
         do {
             let marketsData: MarketsData = try await dataLoader.fetchData()
-            viewState = .loaded(marketsData.markets)
+            viewState = .loaded(marketsData.marketViewModels)
         } catch {
-            
+            viewState = .failed(
+                FailureViewModel(
+                    title: "Something went wrong",
+                    subtitle: "Please try again later."
+                )
+            )
+        }
+    }
+}
+
+private extension MarketsData {
+    var marketViewModels: [MarketViewModel] {
+        markets.map { market in
+            MarketViewModel(name: market.market)
         }
     }
 }
@@ -30,7 +43,7 @@ extension AppsViewModel {
     enum ViewState {
         case idle
         case loading
-        case loaded([Market])
-        case failed(String)
+        case loaded([MarketViewModel])
+        case failed(FailureViewModel)
     }
 }
